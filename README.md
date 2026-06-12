@@ -24,28 +24,28 @@ graph TD
         ToolRouter[Tool Selection Router]
     end
     
-    subgraph Retrieval Layer
+    subgraph RetrievalLayer [Retrieval Layer]
         GeoResolver[Location Resolution Engine]
         NWPFetcher[Gridded NWP Integrator]
         DocScraper[Spatial PDF Parser]
     end
     
-    subgraph External Systems
+    subgraph ExternalSystems [External Systems]
         GeoDB[(Coordinate Database)]
         MausamgramAPI[Internal Weather API]
         BulletinPortal[Internal Press Release Portal]
     end
     
-    subgraph Synthesis Layer
+    subgraph SynthesisLayer [Synthesis Layer]
         ContextBuilder[Prompt Context Aggregator]
         LLM[Inference Engine]
         Verifier[Grounding Verification]
     end
     
-    Orchestrator --> Retrieval Layer
-    Retrieval Layer <--> External Systems
-    Retrieval Layer --> Synthesis Layer
-    Synthesis Layer --> FinalResponse[Natural Language Output]
+    Orchestrator --> RetrievalLayer
+    RetrievalLayer <--> ExternalSystems
+    RetrievalLayer --> SynthesisLayer
+    SynthesisLayer --> FinalResponse[Natural Language Output]
 ```
 
 ### Subsystem: Agentic Orchestrator
@@ -159,13 +159,3 @@ This project involved orchestrating access to pre-existing numerical weather pre
 * **Parameter-Efficient Fine-Tuning (PEFT):** Developed LoRA fine-tuning pipelines utilizing the TRL library to adapt foundational models to specific meteorological phrasing and terminology.
 * **System Validation and Reliability:** Implemented the context grounding constraints and the "fail-closed" error handling logic critical for preventing hallucination.
 
-## Lessons Learned
-
-### Building Production-Oriented AI Systems
-Deploying Large Language Models in domains demanding high factual rigor fundamentally alters the engineering priorities. The primary objective is not maximizing generative fluency, but rather maximizing constraint. Extensive engineering effort must be directed toward writing robust validation logic that monitors the input state and the output generation, ensuring the model operates strictly as a summarization engine rather than an independent reasoning agent.
-
-### The Limitations of Standard RAG Architectures
-The assumption that RAG equates to chunking documents into a vector database is incorrect when applied to structured, highly volatile data. Vector semantic search is the wrong tool for retrieving the current temperature at a specific coordinate. Building robust AI systems requires evaluating the fundamental nature of the underlying data and constructing API-centric retrieval layers capable of querying live endpoints rather than static embeddings.
-
-### Deployment Realities of Local Inference
-While local inference provides necessary security guarantees, it requires deep optimization of the software stack. Handling out-of-memory errors, managing context window degradation, and optimizing token generation speeds on internal hardware are significant infrastructure challenges that must be addressed alongside prompt engineering and model selection.
