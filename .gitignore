@@ -1,18 +1,32 @@
-# Ignore all files and directories by default
-*
+# Environments
+.env
+.env.*
+!.env.example
 
-# Allow directories to be traversed
-!*/
+# Python
+__pycache__/
+*.pyc
 
-# Allow only markdown documentation files
-!*.md
+# Data and sensitive files
+*.csv
+*.json
+*.jsonl
+*.pb
+*.pbs
+*.key
+*.pem
+*.php
+mausamgram_php/
 
-# Allow visual assets (images, diagrams)
-!*.png
-!*.jpg
-!*.jpeg
-!*.gif
-!*.svg
+# Document artifacts
+*.docx
+*.pdf
 
-# Allow .gitignore itself
-!.gitignore
+# Model files
+*.gguf
+*.bin
+*.pt
+
+# IDEs
+.vscode/
+.idea/
